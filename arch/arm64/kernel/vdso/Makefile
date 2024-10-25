@@ -1,13 +1,4 @@
-# SPDX-License-Identifier: GPL-2.0
-#
-# Building a vDSO image for AArch64.
-#
-# Author: Will Deacon <will.deacon@arm.com>
-# Heavily based on the vDSO Makefiles for other archs.
-#
 
-# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
-# the inclusion of generic Makefile.
 ARCH_REL_TYPE_ABS := R_AARCH64_JUMP_SLOT|R_AARCH64_GLOB_DAT|R_AARCH64_ABS64
 include $(srctree)/lib/vdso/Makefile
 
@@ -17,10 +8,7 @@ obj-vdso := vgettimeofday.o note.o sigreturn.o
 targets := $(obj-vdso) vdso.so vdso.so.dbg
 obj-vdso := $(addprefix $(obj)/, $(obj-vdso))
 
-# -Bsymbolic has been added for consistency with arm, the compat vDSO and
-# potential future proofing if we end up with internal calls to the exported
-# routines, as x86 does (see 6f121e548f83 ("x86, vdso: Reimplement vdso.so
-# preparation in build-time C")).
+
 ldflags-y := -shared -nostdlib -soname=linux-vdso.so.1 --hash-style=sysv \
 		-Bsymbolic --eh-frame-hdr --build-id -n -T
 
